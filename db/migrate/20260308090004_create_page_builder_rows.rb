@@ -2,7 +2,7 @@ class CreatePageBuilderRows < ActiveRecord::Migration[8.1]
   def change
     create_table :page_builder_rows do |t|
       t.string :header
-      t.string :subheading
+      t.string :subheader
       t.string :header_classes
       t.integer :status
       t.integer :type_of

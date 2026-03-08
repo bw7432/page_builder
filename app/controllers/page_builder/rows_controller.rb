@@ -49,7 +49,7 @@ module PageBuilder
     def row_params
       params.require(:row).permit(
         :header,
-        :subheading,
+        :subheader,
         :body,
         :status,
         :type_of,

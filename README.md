@@ -194,7 +194,7 @@ Enums:
 Important fields:
 
 - `header`
-- `subheading`
+- `subheader`
 - `row_classes`
 - `header_classes`
 - `inline_styles`

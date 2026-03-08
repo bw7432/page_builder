@@ -54,7 +54,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_08_090004) do
     t.string "row_classes"
     t.integer "section_id", null: false
     t.integer "status"
-    t.string "subheading"
+    t.string "subheader"
     t.integer "type_of"
     t.datetime "updated_at", null: false
     t.string "url"

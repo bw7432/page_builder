@@ -14,5 +14,5 @@
     p
       = image_tag url_for(row.image), class: "card-img-top", style: row.image_styles, alt: row.header.to_s
 
-  - if row.subheading.present?
-    h6.card-subtitle.mb-2.text-muted = row.subheading
+  - if row.subheader.present?
+    h6.card-subtitle.mb-2.text-muted = row.subheader
