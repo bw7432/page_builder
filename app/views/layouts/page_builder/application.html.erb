@@ -1,17 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Page builder</title>
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
+  <head>
+    <title><%= content_for?(:title) ? yield(:title) : "Page Builder" %></title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
 
-  <%= yield :head %>
+    <%= yield :head %>
 
-  <%= stylesheet_link_tag    "page_builder/application", media: "all" %>
-</head>
-<body>
+    <%= stylesheet_link_tag "page_builder/application", media: "all" %>
+    <%= stylesheet_link_tag "page_builder/pages", media: "all" %>
+    <%= stylesheet_link_tag "page_builder/sections", media: "all" %>
+  </head>
+  <body>
+    <% if notice.present? || alert.present? %>
+      <div class="page-builder-flash">
+        <% if notice.present? %>
+          <p class="notice"><%= notice %></p>
+        <% end %>
+        <% if alert.present? %>
+          <p class="alert"><%= alert %></p>
+        <% end %>
+      </div>
+    <% end %>
 
-<%= yield %>
-
-</body>
+    <%= yield %>
+  </body>
 </html>

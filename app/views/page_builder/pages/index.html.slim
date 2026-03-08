@@ -1,0 +1,22 @@
+.page-builder-admin
+  h1 Pages
+
+  .page-builder-actions
+    = link_to "New page", new_page_path, class: "button"
+
+  table.page-builder-table
+    thead
+      tr
+        th Page
+        th Status
+        th Sections
+        th Edit
+        th Delete
+    tbody
+      - @pages.each do |page|
+        tr
+          td = link_to(page.h1.presence || page.slug, page_show_path(page.slug))
+          td class="status-#{page.status}" = page.status
+          td = link_to "Sections", sections_path(page_id: page.id)
+          td = link_to "Edit", edit_page_path(page)
+          td = button_to "Delete", page_path(page), method: :delete, data: { turbo_confirm: "Are you sure?" }

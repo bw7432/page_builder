@@ -1,0 +1,17 @@
+.page-builder-admin
+  h1 Rows
+
+  .page-builder-actions
+    = link_to "New row", new_row_path(section_id: params[:section_id]), class: "button"
+    - section = @rows.first&.section || PageBuilder::Section.find_by(id: params[:section_id])
+    - if section.present?
+      = link_to "Back to sections", sections_path(page_id: section.page_id), class: "button button-secondary"
+
+  .page-builder-rows-stack
+    - @rows.each do |row|
+      .page-builder-row-card
+        = render "page_builder/rows/row", row: row
+        .page-builder-actions
+          = link_to "Show this row", row_path(row, section_id: params[:section_id]), class: "button button-secondary"
+          = link_to "Edit this row", edit_row_path(row, section_id: params[:section_id]), class: "button button-secondary"
+          = button_to "Delete", row_path(row, section_id: params[:section_id]), method: :delete, data: { turbo_confirm: "Are you sure?" }

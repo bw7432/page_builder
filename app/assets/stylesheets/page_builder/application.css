@@ -1,15 +1,169 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
- *= require_tree .
- *= require_self
- */
+:root {
+	--page-builder-text: #282727;
+	--page-builder-muted: #6b7280;
+	--page-builder-border: #d1d5db;
+	--page-builder-bg: #ffffff;
+	--page-builder-panel: #f8fafc;
+	--page-builder-accent: #2563eb;
+	--page-builder-danger: #b91c1c;
+	--page-builder-success: #166534;
+}
+
+body {
+	margin: 0;
+	color: var(--page-builder-text);
+	background: var(--page-builder-bg);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+a {
+	color: var(--page-builder-accent);
+}
+
+.page-builder-flash {
+	padding: 1rem 1.25rem 0;
+}
+
+.page-builder-flash .notice,
+.page-builder-flash .alert {
+	margin: 0 0 1rem;
+	padding: 0.75rem 1rem;
+	border-radius: 0.5rem;
+}
+
+.page-builder-flash .notice {
+	background: #ecfdf5;
+	color: var(--page-builder-success);
+}
+
+.page-builder-flash .alert {
+	background: #fef2f2;
+	color: var(--page-builder-danger);
+}
+
+.page-builder-admin {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 1.5rem;
+}
+
+.page-builder-admin h1 {
+	margin-top: 0;
+}
+
+.page-builder-actions {
+	display: flex;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+	margin: 1rem 0;
+}
+
+.page-builder-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.page-builder-table th,
+.page-builder-table td {
+	padding: 0.75rem;
+	border-bottom: 1px solid var(--page-builder-border);
+	text-align: left;
+	vertical-align: top;
+}
+
+.page-builder-form {
+	display: grid;
+	gap: 1rem;
+}
+
+.page-builder-form .field,
+.page-builder-form .field-checkbox {
+	display: grid;
+	gap: 0.35rem;
+}
+
+.page-builder-form .field-checkbox {
+	grid-auto-flow: column;
+	justify-content: start;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.page-builder-form input[type="text"],
+.page-builder-form input[type="number"],
+.page-builder-form input[type="url"],
+.page-builder-form input[type="color"],
+.page-builder-form select,
+.page-builder-form textarea {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0.65rem 0.8rem;
+	border: 1px solid var(--page-builder-border);
+	border-radius: 0.5rem;
+	background: #fff;
+}
+
+.page-builder-form .actions {
+	display: flex;
+	gap: 0.75rem;
+	align-items: center;
+}
+
+.page-builder-errors {
+	border: 1px solid #fecaca;
+	background: #fef2f2;
+	border-radius: 0.5rem;
+	padding: 1rem;
+}
+
+.page-builder-preview img,
+.main_image {
+	max-width: 100%;
+	height: auto;
+}
+
+.button,
+button,
+input[type="submit"] {
+	border: 1px solid transparent;
+	border-radius: 0.5rem;
+	background: var(--page-builder-accent);
+	color: #fff;
+	cursor: pointer;
+	padding: 0.65rem 1rem;
+	text-decoration: none;
+}
+
+.button-secondary {
+	background: var(--page-builder-panel);
+	border-color: var(--page-builder-border);
+	color: var(--page-builder-text);
+}
+
+.status-active {
+	color: var(--page-builder-success);
+}
+
+.status-draft,
+.status-unpublished {
+	color: var(--page-builder-muted);
+}
+
+@media (max-width: 768px) {
+	.page-builder-admin {
+		padding: 1rem;
+	}
+
+	.page-builder-table,
+	.page-builder-table tbody,
+	.page-builder-table tr,
+	.page-builder-table td,
+	.page-builder-table th {
+		display: block;
+		width: 100%;
+	}
+
+	.page-builder-table thead {
+		display: none;
+	}
+}

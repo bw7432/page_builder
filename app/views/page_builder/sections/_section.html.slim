@@ -1,0 +1,14 @@
+- if section.type_of == "raw_html"
+  = render "page_builder/sections/raw_html", section: section
+- else
+  .section-row style=("background-color: #{section.background_color}" if section.background_color.present?)
+    .page-builder-section-inner
+      = render "page_builder/sections/#{section.type_of}", section: section
+
+- child_sections = if defined?(@sections) && @sections.present?
+  - @sections.where(section_id: section.id)
+- else
+  - section.sections.order(order: :asc)
+
+- child_sections.each do |child_section|
+  = render "page_builder/sections/section", section: child_section

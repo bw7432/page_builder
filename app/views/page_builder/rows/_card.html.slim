@@ -1,0 +1,5 @@
+- if row.image.attached?
+  = image_tag url_for(row.image), class: "card-img-top", style: row.image_styles, alt: row.header.to_s
+
+- if row.body.present?
+  .card-body = row.body

@@ -1,0 +1,76 @@
+= form_with model: section, class: "page-builder-form" do |f|
+  - if section.errors.any?
+    .page-builder-errors
+      h2 = pluralize(section.errors.count, "error") + " prevented this section from being saved"
+      ul
+        - section.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :image
+    = f.file_field :image
+    - if section.image.attached?
+      .page-builder-preview
+        = image_tag url_for(section.image), class: "main_image", alt: section.image_alt.to_s
+
+  .field
+    = f.label :header
+    = f.text_field :header
+  .field
+    = f.label :header_classes
+    = f.text_field :header_classes
+  .field
+    = f.label :header_type
+    = f.select :header_type, PageBuilder::Section.header_types.keys.map { |value| [value.humanize, value] }, include_blank: "Please choose"
+  .field
+    = f.label :header_text_color
+    = f.text_field :header_text_color
+  .field
+    = f.label :order
+    = f.number_field :order
+  .field
+    = f.label :page_id, "Page"
+    = f.collection_select :page_id, PageBuilder::Page.order(:h1), :id, :h1, include_blank: "Please choose"
+  .field
+    = f.label :image_alt
+    = f.text_field :image_alt
+  .field
+    = f.label :image_styles
+    = f.text_field :image_styles
+  .field
+    = f.label :body
+    = f.rich_text_area :body
+  .field
+    = f.label :body_text_color
+    = f.text_field :body_text_color
+  .field
+    = f.label :raw_html, "Raw HTML (only used if section type is Raw HTML)"
+    = f.text_area :raw_html, rows: 10
+  .field
+    = f.label :type_of
+    = f.select :type_of, PageBuilder::Section.type_ofs.keys.map { |value| [value.humanize, value] }, include_blank: "Please choose"
+  .field
+    = f.label :status
+    = f.select :status, PageBuilder::Section.statuses.keys.map { |value| [value.humanize, value] }, include_blank: "Please choose"
+  .field
+    = f.label :background_color
+    = f.text_field :background_color
+  .field-checkbox
+    = f.check_box :animate
+    = f.label :animate
+  .field
+    = f.label :leading_cols
+    = f.select :leading_cols, (1..12).map { |value| [value, value] }, include_blank: "Please choose"
+  .field
+    = f.label :alignment, "Text Alignment"
+    = f.select :alignment, PageBuilder::Section.alignments.keys.map { |value| [value.humanize, value] }, include_blank: "Please choose"
+  .field-checkbox
+    = f.check_box :cta
+    = f.label :cta
+  .field
+    = f.label :section_id, "Parent section (optional)"
+    = f.collection_select :section_id, PageBuilder::Section.where.not(id: section.id), :id, :header, include_blank: "None"
+
+  .actions
+    = f.submit
+    = link_to "Back to sections", sections_path(page_id: section.page_id || params[:page_id]), class: "button button-secondary"

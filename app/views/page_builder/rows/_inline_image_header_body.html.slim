@@ -1,0 +1,18 @@
+.card
+  .card-body
+    - if row.header.present?
+      .page-builder-inline-image.mb-3
+        - if row.image.attached?
+          = image_tag url_for(row.image), class: "me-2", style: row.image_styles, alt: row.header.to_s
+        h5.card-title.mb-0 = row.header
+
+    - if row.num_value.present?
+      div
+        - row.num_value.to_i.times do
+          span.text-warning.me-1.fs-3 &#9733;
+
+    - if row.body.present?
+      .card-text = row.body
+
+    - if row.subheading.present?
+      h6.card-subtitle.mb-2.text-muted = row.subheading

@@ -1,0 +1,22 @@
+- image_column = capture do
+  .page-builder-col style="grid-column: span #{section.leading_cols};"
+    - if section.image.attached?
+      = image_tag url_for(section.image), class: "section_img", style: section.image_styles, alt: section.image_alt.to_s
+
+- content_column = capture do
+  .page-builder-col.section_image style="grid-column: span #{12 - section.leading_cols};"
+    - unless section.header_type == "hidden"
+      = content_tag section.header_type.to_sym, section.header, style: ("color: #{section.header_text_color}" if section.header_text_color.present?)
+    div style=("color: #{section.body_text_color}" if section.body_text_color.present?) = section.body
+    - if section.cta?
+      .page-builder-cta = render "page_builder/shared/app_links"
+    .page-builder-rows-stack
+      - section.rows.order(order: :asc).each do |row|
+        = render "page_builder/rows/row", row: row
+
+- if section.alignment == "left"
+  == image_column
+  == content_column
+- else
+  == content_column
+  == image_column

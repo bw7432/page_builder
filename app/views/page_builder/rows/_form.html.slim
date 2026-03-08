@@ -1,0 +1,65 @@
+= form_with model: row, class: "page-builder-form" do |f|
+  - if row.errors.any?
+    .page-builder-errors
+      h2 = pluralize(row.errors.count, "error") + " prevented this row from being saved"
+      ul
+        - row.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :image
+    = f.file_field :image
+    - if row.image.attached?
+      .page-builder-preview
+        = image_tag url_for(row.image), class: "main_image", style: row.image_styles, alt: row.header.to_s
+
+  .field
+    = f.label :image_position, "Image position (optional)"
+    = f.select :image_position, PageBuilder::Row.image_positions.keys.map { |value| [value.humanize, value] }, include_blank: "Please choose"
+  .field
+    = f.label :image_styles, "Image styles (optional)"
+    = f.text_field :image_styles
+  .field
+    = f.label :header
+    = f.text_field :header
+  .field
+    = f.label :subheading, "Subheading (optional)"
+    = f.text_field :subheading
+  .field
+    = f.label :body
+    = f.rich_text_area :body
+  .field
+    = f.label :status
+    = f.select :status, PageBuilder::Row.statuses.keys.map { |value| [value.humanize, value] }, include_blank: "Please choose"
+  .field
+    = f.label :order, "Order (optional)"
+    = f.number_field :order
+  .field
+    = f.label :num_value, "Num value (optional)"
+    = f.number_field :num_value, step: 0.01
+  .field
+    = f.label :row_classes, "Row classes (optional)"
+    = f.text_field :row_classes
+  .field
+    = f.label :header_classes, "Header classes (optional)"
+    = f.text_field :header_classes
+  .field
+    = f.label :type_of
+    = f.select :type_of, PageBuilder::Row.type_ofs.keys.map { |value| [value.humanize, value] }, include_blank: "Please choose"
+  .field
+    = f.label :inline_styles
+    = f.text_field :inline_styles
+  .field
+    = f.label :url, "URL (optional)"
+    = f.url_field :url
+  .field
+    = f.label :url_text, "URL text (optional)"
+    = f.text_field :url_text
+  .field
+    = f.label :url_classes, "URL classes (optional)"
+    = f.text_field :url_classes
+  = f.hidden_field :section_id, value: row.section_id || params[:section_id]
+
+  .actions
+    = f.submit
+    = link_to "Back to rows", rows_path(section_id: row.section_id || params[:section_id]), class: "button button-secondary"

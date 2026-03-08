@@ -1,0 +1,6 @@
+.page-builder-col
+  - unless section.header_type == "hidden"
+    = content_tag section.header_type.to_sym, section.header, style: ("color: #{section.header_text_color}" if section.header_text_color.present?)
+  div style=("color: #{section.body_text_color}" if section.body_text_color.present?) = section.body
+  - if section.cta?
+    .page-builder-cta = render "page_builder/shared/app_links"

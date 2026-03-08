@@ -1,0 +1,8 @@
+.page-builder-admin
+  h1 = @section.header.presence || @section.type_of.humanize
+
+  .page-builder-actions
+    = link_to "Edit", edit_section_path(@section), class: "button"
+    = link_to "Back to sections", sections_path(page_id: @section.page_id), class: "button button-secondary"
+
+  = render "page_builder/sections/section", section: @section

@@ -1,0 +1,8 @@
+.page-builder-col
+  - if section.header.present?
+    h2 = section.header
+
+  .page-builder-cards
+    - 15.times do
+      - section.rows.order(order: :asc).each do |row|
+        = render "page_builder/rows/row", row: row

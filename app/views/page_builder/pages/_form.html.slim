@@ -1,0 +1,64 @@
+= form_with model: page, class: "page-builder-form" do |f|
+  - if page.errors.any?
+    .page-builder-errors
+      h2 = pluralize(page.errors.count, "error") + " prevented this page from being saved"
+      ul
+        - page.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :image
+    = f.file_field :image
+    - if page.image.attached?
+      .page-builder-preview
+        = image_tag url_for(page.image), class: "main_image"
+
+  .field
+    = f.label :slug
+    = f.text_field :slug
+  .field
+    = f.label :meta_title
+    = f.text_field :meta_title
+  .field
+    = f.label :meta_keywords
+    = f.text_field :meta_keywords
+  .field
+    = f.label :h1
+    = f.text_field :h1
+  .field
+    = f.label :header_text_color
+    = f.text_field :header_text_color
+  .field
+    = f.label :meta_description
+    = f.text_field :meta_description
+  .field
+    = f.label :image_alt
+    = f.text_field :image_alt
+  .field
+    = f.label :image_styles
+    = f.text_field :image_styles
+  .field
+    = f.label :body
+    = f.rich_text_area :body
+  .field
+    = f.label :body_text_color
+    = f.text_field :body_text_color
+  .field
+    = f.label :status
+    = f.select :status, PageBuilder::Page.statuses.keys.map { |value| [value.humanize, value] }, include_blank: "Please choose"
+  .field
+    = f.label :image_type
+    = f.select :image_type, PageBuilder::Page.image_types.keys.map { |value| [value.humanize, value] }, include_blank: "Please choose"
+  .field
+    = f.label :background_color
+    = f.text_field :background_color
+  .field
+    = f.label :featured
+    = f.select :featured, PageBuilder::Page.featureds.keys.map { |value| [value.humanize, value] }, include_blank: "Please choose"
+  .field-checkbox
+    = f.check_box :cta
+    = f.label :cta
+
+  .actions
+    = f.submit
+    = link_to "Back to pages", pages_path, class: "button button-secondary"

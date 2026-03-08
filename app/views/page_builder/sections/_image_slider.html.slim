@@ -1,0 +1,39 @@
+.page-builder-col
+  - if section.header.present?
+    h2 class=section.header_classes = section.header
+
+  .page-builder-slider data-page-builder-slider=true
+    .page-builder-slider-track
+      - 16.times do
+        - section.rows.order(order: :asc).each do |row|
+          .page-builder-slider-item
+            = render "page_builder/rows/row", row: row
+
+javascript:
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-page-builder-slider]").forEach(function (container) {
+      var track = container.querySelector(".page-builder-slider-track");
+      if (!track || track.dataset.animated === "true") return;
+
+      var items = track.querySelectorAll(".page-builder-slider-item");
+      var numRows = #{section.rows.size};
+      var setWidth = 0;
+
+      for (var i = 0; i < numRows; i += 1) {
+        setWidth += items[i] ? items[i].offsetWidth : 0;
+      }
+
+      var position = 0;
+      var speed = 0.375;
+      track.dataset.animated = "true";
+
+      function animate() {
+        position += speed;
+        if (position >= setWidth) position = 0;
+        track.style.transform = "translateX(-" + position + "px)";
+        requestAnimationFrame(animate);
+      }
+
+      if (setWidth > 0) animate();
+    });
+  });
