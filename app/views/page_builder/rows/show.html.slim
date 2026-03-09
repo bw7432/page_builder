@@ -2,8 +2,8 @@
   h1 = @row.header.presence || @row.type_of.humanize
 
   .page-builder-actions
-    = link_to "Edit", edit_row_path(@row, section_id: @row.section_id), class: "button"
-    = link_to "Back to rows", rows_path(section_id: @row.section_id), class: "button button-secondary"
+    = link_to "Edit", edit_admin_row_path(@row, section_id: @row.section_id), class: "button"
+    = link_to "Back to rows", admin_rows_path(section_id: @row.section_id), class: "button button-secondary"
 
   .page-builder-row-card
     = render "page_builder/rows/row", row: @row

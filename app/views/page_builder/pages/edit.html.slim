@@ -3,5 +3,5 @@
   = render "form", page: @page
 
   .page-builder-actions
-    = link_to "Show this page", page_path(@page), class: "button button-secondary"
-    = link_to "Back to pages", pages_path, class: "button button-secondary"
+    = link_to "Preview page", page_show_path(@page.slug), class: "button button-secondary"
+    = link_to "Back to pages", admin_pages_path, class: "button button-secondary"

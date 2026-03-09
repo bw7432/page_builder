@@ -2,8 +2,8 @@
   h1 Sections
 
   .page-builder-actions
-    = link_to "New section", new_section_path(page_id: params[:page_id]), class: "button"
-    = link_to "Back to pages", pages_path, class: "button button-secondary"
+    = link_to "New section", new_admin_section_path(page_id: params[:page_id]), class: "button"
+    = link_to "Back to pages", admin_pages_path, class: "button button-secondary"
 
   table.page-builder-table
     thead
@@ -15,7 +15,7 @@
     tbody
       - @sections.each do |section|
         tr
-          td = link_to(section.type_of == "raw_html" ? "Raw HTML" : section.header, section_path(section))
-          td = link_to "Rows", rows_path(section_id: section.id)
-          td = link_to "Edit", edit_section_path(section)
-          td = button_to "Delete", section_path(section), method: :delete, data: { turbo_confirm: "Are you sure?" }
+          td = link_to(section.type_of == "raw_html" ? "Raw HTML" : section.header, admin_section_path(section))
+          td = link_to "Rows", admin_rows_path(section_id: section.id)
+          td = link_to "Edit", edit_admin_section_path(section)
+          td = button_to "Delete", admin_section_path(section), method: :delete, data: { turbo_confirm: "Are you sure?" }

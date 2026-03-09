@@ -1,4 +1,4 @@
-= form_with model: page, class: "page-builder-form" do |f|
+= form_with model: [:admin, page], class: "page-builder-form" do |f|
   - if page.errors.any?
     .page-builder-errors
       h2 = pluralize(page.errors.count, "error") + " prevented this page from being saved"
@@ -61,4 +61,4 @@
 
   .actions
     = f.submit
-    = link_to "Back to pages", pages_path, class: "button button-secondary"
+    = link_to "Back to pages", admin_pages_path, class: "button button-secondary"

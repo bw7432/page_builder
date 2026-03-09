@@ -54,6 +54,38 @@ Mount the engine in the host app routes:
 mount PageBuilder::Engine => "/page_builder"
 ```
 
+With the default engine routes, the public page route stays outside the admin area and the CRUD routes live under `/admin` inside the mount:
+
+- public page: `/page_builder/:page_slug`
+- admin pages: `/page_builder/admin/pages`
+- admin sections: `/page_builder/admin/sections`
+- admin rows: `/page_builder/admin/rows`
+
+If you want the whole engine, including public pages, under a host-level admin namespace, you can still mount it there:
+
+```ruby
+namespace :admin do
+	mount PageBuilder::Engine => "/page_builder", as: :page_builder
+end
+```
+
+Then configure the engine to use the host app's admin rule instead of guessing at user predicates:
+
+```ruby
+# config/initializers/page_builder.rb
+PageBuilder.configure do |config|
+	config.admin_authorizer = ->(controller) do
+		controller.user_signed_in? && controller.current_user&.is_admin
+	end
+
+	config.unauthorized_redirect = ->(controller) do
+		controller.main_app.root_path
+	end
+end
+```
+
+Without this, the engine falls back to checking `current_user.is_admin`, `current_user.is_admin?`, or `current_user.admin?` when `current_user` is available.
+
 Copy and run the engine migrations in the host app:
 
 ```bash
@@ -83,15 +115,13 @@ bin/rails db:migrate
 
 The engine defines these routes:
 
-- `root` -> `pages#index`
-- `resources :pages`
-- `resources :sections`
-- `resources :rows`
-- `get "/:page_slug"` -> `pages#show`
+- `root` -> redirect to `/admin/pages` inside the engine mount
+- `scope "/admin"` -> `pages`, `sections`, and `rows` CRUD
+- `get "/:page_slug"` -> `public_pages#show`
 
 That gives you two different kinds of page access:
 
-- Admin-style CRUD paths such as `/page_builder/pages/1/edit`
+- Admin-style CRUD paths such as `/page_builder/admin/pages/1/edit`
 - Public slug paths such as `/page_builder/my-page-slug`
 
 ## Data Model
@@ -207,21 +237,52 @@ Important fields:
 
 Defined in [app/models/page_builder/page_slug.rb](/Users/ben/Documents/sites/page_builder/app/models/page_builder/page_slug.rb).
 
-This currently acts as a supporting model for page slug history, although the controller currently resolves public pages directly from `Page.slug`.
+This currently acts as a supporting model for page slug history, although the public controller currently resolves pages directly from `Page.slug`.
 
 ## Render Pipeline
 
-The main public render path is in [app/controllers/page_builder/pages_controller.rb](/Users/ben/Documents/sites/page_builder/app/controllers/page_builder/pages_controller.rb) and [app/views/page_builder/pages/_page.html.slim](/Users/ben/Documents/sites/page_builder/app/views/page_builder/pages/_page.html.slim).
+The main public render path is in [app/controllers/page_builder/public_pages_controller.rb](/Users/ben/Documents/sites/page_builder/app/controllers/page_builder/public_pages_controller.rb) and [app/views/page_builder/pages/_page.html.slim](/Users/ben/Documents/sites/page_builder/app/views/page_builder/pages/_page.html.slim).
 
 The flow is:
 
-1. `PagesController#show` finds the page by `id` or `page_slug`.
-2. Draft or unpublished pages are blocked for non-admin users.
-3. The page hero block is rendered using the page's `banner` or `portrait` `image_type`.
-4. The page then renders all active parent sections in `order ASC`.
-5. Each section partial chooses a layout based on `section.type_of`.
-6. Sections can recursively render child sections.
-7. Row partials render inside section layouts where needed.
+1. `PublicPagesController#show` finds the page by `page_slug`.
+2. Missing pages return `404`.
+3. Draft or unpublished pages are blocked for non-admin users.
+4. Admin CRUD remains in the namespaced `/admin` routes handled by `PagesController`, `SectionsController`, and `RowsController`.
+5. The page hero block is rendered using the page's `banner` or `portrait` `image_type`.
+6. The page then renders all active parent sections in `order ASC`.
+7. Each section partial chooses a layout based on `section.type_of`.
+8. Sections can recursively render child sections.
+9. Row partials render inside section layouts where needed.
+
+## Host App Integration
+
+For a host app such as `turnboards_api`, the usual setup is:
+
+```ruby
+# Gemfile
+gem "page_builder", path: "../page_builder"
+```
+
+```ruby
+# config/routes.rb
+mount PageBuilder::Engine => "/page_builder"
+```
+
+```ruby
+# config/initializers/page_builder.rb
+PageBuilder.configure do |config|
+	config.admin_authorizer = ->(controller) do
+		controller.user_signed_in? && controller.current_user&.is_admin
+	end
+
+	config.unauthorized_redirect = ->(controller) do
+		controller.main_app.root_path
+	end
+end
+```
+
+If you are consuming a published version of the engine instead of the local checkout, swap the `path:` source back to your Git or gem source after the latest engine changes are available there.
 
 Important section partials:
 

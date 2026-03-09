@@ -1,4 +1,4 @@
-= form_with model: row, class: "page-builder-form" do |f|
+= form_with model: [:admin, row], class: "page-builder-form" do |f|
   - if row.errors.any?
     .page-builder-errors
       h2 = pluralize(row.errors.count, "error") + " prevented this row from being saved"
@@ -62,4 +62,4 @@
 
   .actions
     = f.submit
-    = link_to "Back to rows", rows_path(section_id: row.section_id || params[:section_id]), class: "button button-secondary"
+    = link_to "Back to rows", admin_rows_path(section_id: row.section_id || params[:section_id]), class: "button button-secondary"

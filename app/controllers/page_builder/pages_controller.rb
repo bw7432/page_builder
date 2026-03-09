@@ -1,15 +1,10 @@
 module PageBuilder
   class PagesController < ApplicationController
     before_action :set_page, only: %i[show edit update destroy]
-    before_action :require_admin!, except: %i[index show]
-    before_action :protect_drafts, only: :show
+    before_action :require_admin!
 
     def index
-      @pages = if page_builder_admin?
-        Page.desc
-      else
-        Page.active.desc
-      end
+      @pages = Page.desc
     end
 
     def show
@@ -27,7 +22,7 @@ module PageBuilder
       @page = Page.new(page_params)
 
       if @page.save
-        redirect_to edit_page_path(@page), notice: "Page was successfully created."
+        redirect_to edit_admin_page_path(@page), notice: "Page was successfully created."
       else
         render :new, status: :unprocessable_entity
       end
@@ -35,7 +30,7 @@ module PageBuilder
 
     def update
       if @page.update(page_params)
-        redirect_to edit_page_path(@page), notice: "Page was successfully updated."
+        redirect_to edit_admin_page_path(@page), notice: "Page was successfully updated."
       else
         render :edit, status: :unprocessable_entity
       end
@@ -43,14 +38,10 @@ module PageBuilder
 
     def destroy
       @page.destroy
-      redirect_to pages_path, notice: "Page was successfully destroyed."
+      redirect_to admin_pages_path, notice: "Page was successfully destroyed."
     end
 
     private
-
-    def protect_drafts
-      require_admin! unless @page.active?
-    end
 
     def set_page
       @page = Page.find_by(id: params[:id]) || Page.find_by(slug: params[:page_slug])

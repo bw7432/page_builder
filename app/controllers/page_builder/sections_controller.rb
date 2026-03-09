@@ -1,7 +1,7 @@
 module PageBuilder
   class SectionsController < ApplicationController
     before_action :set_section, only: %i[show edit update destroy]
-    before_action :require_admin!, except: %i[index show]
+    before_action :require_admin!
 
     def index
       @sections = Section.where(page_id: params[:page_id]).includes(:page).order(order: :asc)
@@ -21,7 +21,7 @@ module PageBuilder
       @section = Section.new(section_params)
 
       if @section.save
-        redirect_to sections_path(page_id: @section.page_id), notice: "Section was successfully created."
+        redirect_to admin_sections_path(page_id: @section.page_id), notice: "Section was successfully created."
       else
         render :new, status: :unprocessable_entity
       end
@@ -29,7 +29,7 @@ module PageBuilder
 
     def update
       if @section.update(section_params)
-        redirect_to sections_path(page_id: @section.page_id), notice: "Section was successfully updated."
+        redirect_to admin_sections_path(page_id: @section.page_id), notice: "Section was successfully updated."
       else
         render :edit, status: :unprocessable_entity
       end
@@ -38,7 +38,7 @@ module PageBuilder
     def destroy
       page_id = @section.page_id
       @section.destroy
-      redirect_to sections_path(page_id: page_id), notice: "Section was successfully destroyed."
+      redirect_to admin_sections_path(page_id: page_id), notice: "Section was successfully destroyed."
     end
 
     private

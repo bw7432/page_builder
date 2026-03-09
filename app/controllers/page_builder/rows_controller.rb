@@ -1,6 +1,7 @@
 module PageBuilder
   class RowsController < ApplicationController
     before_action :set_row, only: %i[show edit update destroy]
+    before_action :require_admin!
 
     def index
       @rows = Row.where(section_id: params[:section_id]).includes(:section).order(order: :asc)
@@ -20,7 +21,7 @@ module PageBuilder
       @row = Row.new(row_params)
 
       if @row.save
-        redirect_to rows_path(section_id: @row.section_id), notice: "Row was successfully created."
+        redirect_to admin_rows_path(section_id: @row.section_id), notice: "Row was successfully created."
       else
         render :new, status: :unprocessable_entity
       end
@@ -28,7 +29,7 @@ module PageBuilder
 
     def update
       if @row.update(row_params)
-        redirect_to rows_path(section_id: @row.section_id), notice: "Row was successfully updated."
+        redirect_to admin_rows_path(section_id: @row.section_id), notice: "Row was successfully updated."
       else
         render :edit, status: :unprocessable_entity
       end
@@ -37,7 +38,7 @@ module PageBuilder
     def destroy
       section_id = @row.section_id
       @row.destroy
-      redirect_to rows_path(section_id: section_id), notice: "Row was successfully destroyed."
+      redirect_to admin_rows_path(section_id: section_id), notice: "Row was successfully destroyed."
     end
 
     private

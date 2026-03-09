@@ -5,10 +5,15 @@ module PageBuilder
     private
 
     def page_builder_admin?
+      if PageBuilder.admin_authorizer.respond_to?(:call)
+        return !!PageBuilder.admin_authorizer.call(self)
+      end
+
       return true unless respond_to?(:current_user, true)
 
       user = current_user
       return false unless user
+      return user.is_admin if user.respond_to?(:is_admin)
       return user.is_admin? if user.respond_to?(:is_admin?)
       return user.admin? if user.respond_to?(:admin?)
 
@@ -19,9 +24,15 @@ module PageBuilder
       return if page_builder_admin?
 
       respond_to do |format|
-        format.html { redirect_to pages_path, alert: "Not authorized." }
+        format.html { redirect_to unauthorized_redirect_path, alert: "Not authorized." }
         format.any { head :forbidden }
       end
+    end
+
+    def unauthorized_redirect_path
+      return instance_exec(&PageBuilder.unauthorized_redirect) if PageBuilder.unauthorized_redirect.respond_to?(:call)
+
+      admin_pages_path
     end
 
     def render_not_found
