@@ -22,4 +22,20 @@ class PageBuilderTest < ActiveSupport::TestCase
     assert_same authorizer, PageBuilder.admin_authorizer
     assert_same redirector, PageBuilder.unauthorized_redirect
   end
+
+  test "it evaluates one-argument config callables with the controller" do
+    controller = PageBuilder::ApplicationController.new
+
+    result = controller.send(:evaluate_config_callable, ->(current_controller) { current_controller.class.name })
+
+    assert_equal "PageBuilder::ApplicationController", result
+  end
+
+  test "it evaluates zero-argument config callables in controller context" do
+    controller = PageBuilder::ApplicationController.new
+
+    result = controller.send(:evaluate_config_callable, -> { self.class.name })
+
+    assert_equal "PageBuilder::ApplicationController", result
+  end
 end

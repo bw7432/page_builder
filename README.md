@@ -93,6 +93,8 @@ bin/rails page_builder:install:migrations
 bin/rails db:migrate
 ```
 
+PageBuilder only installs its own tables. It does not ship Active Storage or Action Text migrations.
+
 ## Rails Features Required
 
 PageBuilder depends on Rails features from the host application:
@@ -110,6 +112,10 @@ bin/rails action_text:install
 bin/rails active_storage:install
 bin/rails db:migrate
 ```
+
+Those tables and services remain owned by the parent application. PageBuilder records attach into the host app's existing Active Storage and Action Text tables.
+
+If you use the PageBuilder admin rich text fields, the host app is also responsible for loading the corresponding Trix and Action Text assets.
 
 ## Routes
 

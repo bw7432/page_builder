@@ -6,7 +6,7 @@ module PageBuilder
 
     def page_builder_admin?
       if PageBuilder.admin_authorizer.respond_to?(:call)
-        return !!PageBuilder.admin_authorizer.call(self)
+        return !!evaluate_config_callable(PageBuilder.admin_authorizer)
       end
 
       return true unless respond_to?(:current_user, true)
@@ -30,9 +30,17 @@ module PageBuilder
     end
 
     def unauthorized_redirect_path
-      return instance_exec(&PageBuilder.unauthorized_redirect) if PageBuilder.unauthorized_redirect.respond_to?(:call)
+      if PageBuilder.unauthorized_redirect.respond_to?(:call)
+        return evaluate_config_callable(PageBuilder.unauthorized_redirect)
+      end
 
       admin_pages_path
+    end
+
+    def evaluate_config_callable(callable)
+      return instance_exec(&callable) if callable.arity.zero?
+
+      callable.call(self)
     end
 
     def render_not_found
