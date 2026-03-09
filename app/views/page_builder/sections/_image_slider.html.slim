@@ -8,65 +8,71 @@
       | .slider-item { display: inline-block; vertical-align: top; }
     .slider-container.overflow-hidden
       .slider-track
-        - 16.times do
+        - if section.animate?
+          - 16.times do
+            - section.rows.each do |row|
+              .slider-item.inline-block
+                = render row
+        - else
           - section.rows.each do |row|
             .slider-item.inline-block
               = render row
-    javascript:
-      document.addEventListener('DOMContentLoaded', function() {
-        const track = document.querySelector('.slider-track');
-        if (!track) return;
+    - if section.animate?
+      javascript:
+        document.addEventListener('DOMContentLoaded', function() {
+          const track = document.querySelector('.slider-track');
+          if (!track) return;
 
-        const items = Array.from(track.querySelectorAll('.slider-item'));
-        const images = Array.from(track.querySelectorAll('img'));
-        const numRows = #{section.rows.size};
+          const items = Array.from(track.querySelectorAll('.slider-item'));
+          const images = Array.from(track.querySelectorAll('img'));
+          const numRows = #{section.rows.size};
 
-        const startSlider = function() {
-          const setWidth = items
-            .slice(0, numRows)
-            .reduce((total, item) => total + item.getBoundingClientRect().width, 0);
+          const startSlider = function() {
+            const setWidth = items
+              .slice(0, numRows)
+              .reduce((total, item) => total + item.getBoundingClientRect().width, 0);
 
-          if (!setWidth) return;
+            if (!setWidth) return;
 
-          let position = 0;
-          const speed = 0.375;
+            let position = 0;
+            const speed = 0.375;
 
-          function animate() {
-            position += speed;
+            function animate() {
+              position += speed;
 
-            if (position >= setWidth) {
-              position -= setWidth;
+              if (position >= setWidth) {
+                position -= setWidth;
+              }
+
+              track.style.transform = `translate3d(-${position}px, 0, 0)`;
+              requestAnimationFrame(animate);
             }
 
-            track.style.transform = `translate3d(-${position}px, 0, 0)`;
-            requestAnimationFrame(animate);
-          }
+            animate();
+          };
 
-          animate();
-        };
-
-        if (!images.length) {
-          startSlider();
-          return;
-        }
-
-        let remaining = images.length;
-
-        const handleImageReady = function() {
-          remaining -= 1;
-
-          if (remaining === 0) {
+          if (!images.length) {
             startSlider();
-          }
-        };
-
-        images.forEach(function(image) {
-          if (image.complete) {
-            handleImageReady();
             return;
           }
 
-          image.addEventListener('load', handleImageReady, { once: true });
-          image.addEventListener('error', handleImageReady, { once: true });
+          let remaining = images.length;
+
+          const handleImageReady = function() {
+            remaining -= 1;
+
+            if (remaining === 0) {
+              startSlider();
+            }
+          };
+
+          images.forEach(function(image) {
+            if (image.complete) {
+              handleImageReady();
+              return;
+            }
+
+            image.addEventListener('load', handleImageReady, { once: true });
+            image.addEventListener('error', handleImageReady, { once: true });
+          });
         });
-      });
