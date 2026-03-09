@@ -3,7 +3,7 @@
     - if row.header.present?
       .page-builder-inline-image.mb-3
         - if row.image.attached?
-          = image_tag url_for(row.image), class: "me-2", style: row.image_styles, alt: row.header.to_s
+          = image_tag main_app.url_for(row.image), class: "me-2", style: row.image_styles, alt: row.header.to_s
         h5.card-title.mb-0 = row.header
 
     - if row.num_value.present?

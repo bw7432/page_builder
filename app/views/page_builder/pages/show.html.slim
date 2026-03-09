@@ -1,3 +1,3 @@
 - content_for :title, (@page.meta_title.presence || @page.h1 || "Page Builder")
 
-= render "page", page: @page
+= render "page_builder/pages/page", page: @page

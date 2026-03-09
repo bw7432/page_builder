@@ -1,39 +1,72 @@
-.page-builder-col
-  - if section.header.present?
-    h2 class=section.header_classes = section.header
+.row
+  .col-12
+    - if section.header.present?
+      h2 class="#{section.header_classes}"
+        = section.header
+    style
+      | .slider-track { white-space: nowrap; will-change: transform; }
+      | .slider-item { display: inline-block; vertical-align: top; }
+    .slider-container.overflow-hidden
+      .slider-track
+        - 16.times do
+          - section.rows.each do |row|
+            .slider-item.inline-block
+              = render row
+    javascript:
+      document.addEventListener('DOMContentLoaded', function() {
+        const track = document.querySelector('.slider-track');
+        if (!track) return;
 
-  .page-builder-slider data-page-builder-slider=true
-    .page-builder-slider-track
-      - 16.times do
-        - section.rows.order(order: :asc).each do |row|
-          .page-builder-slider-item
-            = render "page_builder/rows/row", row: row
+        const items = Array.from(track.querySelectorAll('.slider-item'));
+        const images = Array.from(track.querySelectorAll('img'));
+        const numRows = #{section.rows.size};
 
-javascript:
-  document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("[data-page-builder-slider]").forEach(function (container) {
-      var track = container.querySelector(".page-builder-slider-track");
-      if (!track || track.dataset.animated === "true") return;
+        const startSlider = function() {
+          const setWidth = items
+            .slice(0, numRows)
+            .reduce((total, item) => total + item.getBoundingClientRect().width, 0);
 
-      var items = track.querySelectorAll(".page-builder-slider-item");
-      var numRows = #{section.rows.size};
-      var setWidth = 0;
+          if (!setWidth) return;
 
-      for (var i = 0; i < numRows; i += 1) {
-        setWidth += items[i] ? items[i].offsetWidth : 0;
-      }
+          let position = 0;
+          const speed = 0.375;
 
-      var position = 0;
-      var speed = 0.375;
-      track.dataset.animated = "true";
+          function animate() {
+            position += speed;
 
-      function animate() {
-        position += speed;
-        if (position >= setWidth) position = 0;
-        track.style.transform = "translateX(-" + position + "px)";
-        requestAnimationFrame(animate);
-      }
+            if (position >= setWidth) {
+              position -= setWidth;
+            }
 
-      if (setWidth > 0) animate();
-    });
-  });
+            track.style.transform = `translate3d(-${position}px, 0, 0)`;
+            requestAnimationFrame(animate);
+          }
+
+          animate();
+        };
+
+        if (!images.length) {
+          startSlider();
+          return;
+        }
+
+        let remaining = images.length;
+
+        const handleImageReady = function() {
+          remaining -= 1;
+
+          if (remaining === 0) {
+            startSlider();
+          }
+        };
+
+        images.forEach(function(image) {
+          if (image.complete) {
+            handleImageReady();
+            return;
+          }
+
+          image.addEventListener('load', handleImageReady, { once: true });
+          image.addEventListener('error', handleImageReady, { once: true });
+        });
+      });

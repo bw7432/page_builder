@@ -11,7 +11,7 @@
     = f.file_field :image
     - if row.image.attached?
       .page-builder-preview
-        = image_tag url_for(row.image), class: "main_image", style: row.image_styles, alt: row.header.to_s
+        = image_tag main_app.url_for(row.image), class: "main_image", style: row.image_styles, alt: row.header.to_s
 
   .field
     = f.label :image_position, "Image position (optional)"

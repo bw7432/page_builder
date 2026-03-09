@@ -1,2 +1,2 @@
 - if row.image.attached?
-  = image_tag url_for(row.image), class: "img-fluid", style: "#{row.image_styles}; object-fit: contain; height: 200px;", alt: row.header.to_s
+  = image_tag main_app.url_for(row.image), class: "img-fluid", style: "#{row.image_styles}; object-fit: contain; height: 200px;", alt: row.header.to_s

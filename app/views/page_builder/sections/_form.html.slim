@@ -11,7 +11,7 @@
     = f.file_field :image
     - if section.image.attached?
       .page-builder-preview
-        = image_tag url_for(section.image), class: "main_image", alt: section.image_alt.to_s
+        = image_tag main_app.url_for(section.image), class: "main_image", alt: section.image_alt.to_s
 
   .field
     = f.label :header

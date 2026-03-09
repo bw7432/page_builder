@@ -7,4 +7,4 @@
 
 .page-builder-col.section_image style="grid-column: span 5;"
   - if section.image.attached?
-    = image_tag url_for(section.image), class: "section_img", style: section.image_styles, alt: section.image_alt.to_s
+    = image_tag main_app.url_for(section.image), class: "section_img", style: section.image_styles, alt: section.image_alt.to_s

@@ -3,7 +3,7 @@
     - if page.banner?
       .page-builder-hero-banner
         - if page.image.attached?
-          = image_tag url_for(page.image), class: "page_img", style: page.image_styles, alt: page.image_alt.to_s
+          = image_tag main_app.url_for(page.image), class: "page_img", style: page.image_styles, alt: page.image_alt.to_s
       .page-builder-hero-copy
         h1 style=("color: #{page.header_text_color}" if page.header_text_color.present?) = page.h1
         div style=("color: #{page.body_text_color}" if page.body_text_color.present?) = page.body
@@ -19,7 +19,7 @@
             .page-builder-cta = render "page_builder/shared/app_links"
       .page-builder-hero-media.portrait class=("page_image" if page.image.attached?)
         - if page.image.attached?
-          = image_tag url_for(page.image), class: "page_img", style: page.image_styles, alt: page.image_alt.to_s
+          = image_tag main_app.url_for(page.image), class: "page_img", style: page.image_styles, alt: page.image_alt.to_s
 
 - page.sections.active.parents.ascending.includes(:rich_text_body, :image_attachment, rows: %i[rich_text_body image_attachment]).each do |section|
   = render "page_builder/sections/section", section: section

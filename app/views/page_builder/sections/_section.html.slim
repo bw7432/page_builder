@@ -5,10 +5,7 @@
     .page-builder-section-inner
       = render "page_builder/sections/#{section.type_of}", section: section
 
-- child_sections = if defined?(@sections) && @sections.present?
-  - @sections.where(section_id: section.id)
-- else
-  - section.sections.order(order: :asc)
+- child_sections = defined?(@sections) && @sections.present? ? @sections.where(section_id: section.id) : section.sections.order(order: :asc)
 
 - child_sections.each do |child_section|
   = render "page_builder/sections/section", section: child_section
