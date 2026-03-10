@@ -51,7 +51,7 @@ bundle install
 Mount the engine in the host app routes:
 
 ```ruby
-mount PageBuilder::Engine => "/page_builder"
+mount PageBuilder::Engine => "/page_builder", as: :page_builder
 ```
 
 With the default engine routes, the public page route stays outside the admin area and the CRUD routes live under `/admin` inside the mount:
@@ -116,6 +116,31 @@ bin/rails db:migrate
 Those tables and services remain owned by the parent application. PageBuilder records attach into the host app's existing Active Storage and Action Text tables.
 
 If you use the PageBuilder admin rich text fields, the host app is also responsible for loading the corresponding Trix and Action Text assets.
+
+In practice, the host app should usually override the engine layout so PageBuilder screens load the host app's importmap and rich text assets. A typical override looks like this:
+
+```erb
+<!-- app/views/layouts/page_builder/application.html.erb -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+		<%= stylesheet_link_tag "trix", media: "all" %>
+		<%= stylesheet_link_tag "actiontext", media: "all" %>
+		<%= stylesheet_link_tag "page_builder/application", media: "all" %>
+		<%= stylesheet_link_tag "page_builder/pages", media: "all" %>
+		<%= stylesheet_link_tag "page_builder/sections", media: "all" %>
+		<%= javascript_importmap_tags %>
+		<%= javascript_import_module_tag "trix" %>
+		<%= javascript_import_module_tag "@rails/actiontext" %>
+	</head>
+	<body>
+		<%= yield %>
+	</body>
+</html>
+```
+
+The engine registers its own CSS files for Sprockets precompilation, but the host app still owns the JavaScript boot path for Trix and Action Text.
 
 ## Routes
 
@@ -272,7 +297,7 @@ gem "page_builder", path: "../page_builder"
 
 ```ruby
 # config/routes.rb
-mount PageBuilder::Engine => "/page_builder"
+mount PageBuilder::Engine => "/page_builder", as: :page_builder
 ```
 
 ```ruby
@@ -300,6 +325,11 @@ Important section partials:
 - [app/views/page_builder/sections/_image_and_rows.html.slim](/Users/ben/Documents/sites/page_builder/app/views/page_builder/sections/_image_and_rows.html.slim)
 - [app/views/page_builder/sections/_raw_html.html.slim](/Users/ben/Documents/sites/page_builder/app/views/page_builder/sections/_raw_html.html.slim)
 
+Section behavior notes:
+
+- `split_pane` can render both a section image and its nested rows in the media column.
+- `image_slider` only duplicates rows and runs its animation JavaScript when `section.animate?` is true. When `animate` is false, it renders a single static pass of rows.
+
 Important row partials:
 
 - [app/views/page_builder/rows/_image_text.html.slim](/Users/ben/Documents/sites/page_builder/app/views/page_builder/rows/_image_text.html.slim)
@@ -315,9 +345,11 @@ Authorization is intentionally lightweight and lives in [app/controllers/page_bu
 Behavior:
 
 - If the host app does not define `current_user`, the engine treats requests as admin-capable.
-- If `current_user` exists, the engine checks `is_admin?` first, then `admin?`.
-- Create, update, and delete actions for pages and sections require admin access.
+- If `current_user` exists, the engine checks `is_admin`, then `is_admin?`, then `admin?`.
+- CRUD actions for pages, sections, and rows require admin access.
 - Page rendering is public only for active pages.
+
+Configured authorization lambdas may accept either zero arguments or the current controller instance as one argument.
 
 This means the engine can work in two modes:
 
