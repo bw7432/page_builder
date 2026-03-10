@@ -1,4 +1,6 @@
-- content_for :title, (@page.meta_title.presence || @page.h1 || "Page Builder")
+- provide(:title, @page.meta_title.presence || @page.h1 || "Page Builder")
+- provide(:description, @page.meta_description)
+- provide(:keywords, @page.meta_keywords)
 - content_for :head do
 	= stylesheet_link_tag "page_builder/application", media: "all"
 	= stylesheet_link_tag "page_builder/pages", media: "all"
