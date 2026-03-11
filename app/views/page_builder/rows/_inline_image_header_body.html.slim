@@ -9,7 +9,7 @@
       .div
         - row.num_value.to_i.times do
           span.text-warning.me-1.fs-3 &#9733;
-    - if row.body.present?
-      .card-text == row.body
     - if row.subheader.present?
       h6.card-subtitle.mb-2.text-muted == row.subheader
+    - if row.body.present?
+      .card-text == row.body
