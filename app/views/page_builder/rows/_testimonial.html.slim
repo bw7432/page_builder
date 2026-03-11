@@ -1,18 +1,14 @@
 .card-body
   - if row.header.present?
     h5.card-title = row.header
-
   - if row.num_value.present?
-    div
+    .div
       - row.num_value.to_i.times do
         span.text-warning.me-1.fs-3 &#9733;
-
   - if row.body.present?
-    .card-text = row.body
-
+    .card-text == row.body
   - if row.image.attached?
     p
-      = image_tag main_app.url_for(row.image), class: "card-img-top", style: row.image_styles, alt: row.header.to_s
-
+      = image_tag(main_app.url_for(row.image), class: 'card-img-top', style: row.image_styles, alt: '')
   - if row.subheader.present?
-    h6.card-subtitle.mb-2.text-muted = row.subheader
+    h6.card-subtitle.mb-2.text-muted == row.subheader

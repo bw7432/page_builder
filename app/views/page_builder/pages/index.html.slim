@@ -15,7 +15,7 @@
     tbody
       - @pages.each do |page|
         tr
-          td = link_to(page.h1.presence || page.slug, page_show_path(page.slug))
+          td = link_to(page.h1.presence || page.slug, page_builder.page_show_path(page.slug))
           td class="status-#{page.status}" = page.status
           td = link_to "Sections", admin_sections_path(page_id: page.id)
           td = link_to "Edit", edit_admin_page_path(page)

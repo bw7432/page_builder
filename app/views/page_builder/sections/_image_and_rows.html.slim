@@ -1,22 +1,25 @@
+- text_column = capture do
+  div class="col-md-#{section.leading_cols} mb-4 d-flex align-items-center"
+    div.justify-content-start
+      - if section.image.attached?
+        = image_tag(main_app.url_for(section.image), class: 'section_img', style: section.image_styles)
+
 - image_column = capture do
-  .page-builder-col style="grid-column: span #{section.leading_cols};"
-    - if section.image.attached?
-      = image_tag main_app.url_for(section.image), class: "section_img", style: section.image_styles, alt: section.image_alt.to_s
+  div class="col-md-#{12 - section.leading_cols} section_image"
+    - unless section.header_type == 'hidden'
+      = content_tag section.header_type.to_sym, style: "#{section.header_text_color ? "color:#{section.header_text_color}" : ''}"
+        = section.header
+    .div style="#{section.body_text_color ? "color:#{section.body_text_color}" : ''}"
+      == section.body
+    - if section.cta
+      br
+      = render 'shared/app_links'
+    - section.rows.each do |row|
+      = render row
 
-- content_column = capture do
-  .page-builder-col.section_image style="grid-column: span #{12 - section.leading_cols};"
-    - unless section.header_type == "hidden"
-      = content_tag section.header_type.to_sym, section.header, style: ("color: #{section.header_text_color}" if section.header_text_color.present?)
-    div style=("color: #{section.body_text_color}" if section.body_text_color.present?) = section.body
-    - if section.cta?
-      .page-builder-cta = render "page_builder/shared/app_links"
-    .page-builder-rows-stack
-      - section.rows.order(order: :asc).each do |row|
-        = render "page_builder/rows/row", row: row
-
-- if section.alignment == "left"
-  == image_column
-  == content_column
+- if section.alignment == 'left'
+  = text_column
+  = image_column
 - else
-  == content_column
-  == image_column
+  = image_column
+  = text_column

@@ -1,10 +1,14 @@
-.page-builder-col style="grid-column: span 7;"
-  - unless section.header_type == "hidden"
-    = content_tag section.header_type.to_sym, section.header, style: ("color: #{section.header_text_color}" if section.header_text_color.present?)
-  div style=("color: #{section.body_text_color}" if section.body_text_color.present?) = section.body
-  - if section.cta?
-    .page-builder-cta = render "page_builder/shared/app_links"
-
-.page-builder-col.section_image style="grid-column: span 5;"
+.col-md-7.mb-4.d-flex.align-items-center
+  div.justify-content-start
+    - unless section.header_type == 'hidden'
+      = content_tag section.header_type.to_sym, style: "#{section.header_text_color ? "color:#{section.header_text_color}" : ''}"
+        = section.header
+    .div style="#{section.body_text_color ? "color:#{section.body_text_color}" : ''}"
+      == section.body
+    - if section.cta
+      br
+      = render 'page_builder/shared/app_links'
+          
+.col-md-5.section_image
   - if section.image.attached?
-    = image_tag main_app.url_for(section.image), class: "section_img", style: section.image_styles, alt: section.image_alt.to_s
+    = image_tag(main_app.url_for(section.image), class: 'section_img', style: section.image_styles)

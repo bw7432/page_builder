@@ -1,9 +1,24 @@
-- if section.type_of == "raw_html"
-  = render "page_builder/sections/raw_html", section: section
-- else
-  .section-row style=("background-color: #{section.background_color}" if section.background_color.present?)
-    .page-builder-section-inner
-      = render "page_builder/sections/#{section.type_of}", section: section
+- unless section.type_of == 'raw_html'
+  .row.section-row style="#{section.background_color ? "background-color:#{section.background_color}" : ''}"
+    .container
+      .row
+        - case section.type_of
+        - when 'text'
+          = render 'page_builder/sections/text', section: section
+        - when 'text_image'
+          = render 'page_builder/sections/text_image', section: section
+        - when 'split_pane'
+          = render 'page_builder/sections/split_pane', section: section
+        - when 'image_slider'
+          = render 'page_builder/sections/image_slider', section: section
+        - when 'cards'
+          = render 'page_builder/sections/cards', section: section
+        - when 'image_and_rows'
+          = render 'page_builder/sections/image_and_rows', section: section
+
+        
+- if section.type_of == 'raw_html'        
+  = render 'page_builder/sections/raw_html', section: section
 
 - child_sections = defined?(@sections) && @sections.present? ? @sections.where(section_id: section.id) : section.sections.order(order: :asc)
 

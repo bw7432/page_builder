@@ -1,15 +1,20 @@
 - case row.type_of
-- when "image_text"
-  = render "page_builder/rows/image_text", row: row
-- when "testimonial"
-  .page-builder-row-card class=row.row_classes
-    = render "page_builder/rows/testimonial", row: row
-- when "image_slider"
-  div class=row.row_classes
-    = render "page_builder/rows/image_slider_item", row: row
-- when "inline_image_header_body"
-  .page-builder-row-card class=row.row_classes
-    = render "page_builder/rows/inline_image_header_body", row: row
-- when "card"
-  .page-builder-row-card class=row.row_classes
-    = render "page_builder/rows/card", row: row
+- when 'image_text'
+  .row
+    .col-md-12
+      = render 'page_builder/rows/image_text', row: row
+- when 'testimonial'
+  div.d-flex.col-md-4.p-1
+    div class="#{row.row_classes}"
+      = render 'page_builder/rows/testimonial', row: row
+- when 'image_slider'
+  div.d-flex.col-md-4.p-1
+    div class="#{row.row_classes}"
+      = render 'page_builder/rows/image_slider_item', row: row
+- when 'inline_image_header_body'
+  div.d-flex.p-1
+    div class="#{row.row_classes}"
+      = render 'page_builder/rows/inline_image_header_body', row: row
+- when 'card'
+  div class="#{row.row_classes}"
+    = render 'page_builder/rows/card', row: row  

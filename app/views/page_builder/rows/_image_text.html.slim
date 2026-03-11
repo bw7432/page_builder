@@ -1,12 +1,17 @@
-.page-builder-image-text class=row.row_classes style=(row.inline_styles if row.inline_styles.present?)
-  - if row.image_position == "top"
+-# partial expects locals: row (with `image` attachment) and `text` (HTML-safe or string)
+div class="#{row.row_classes} mb-3"
+  - if row.image_position == 'top'
+    -# image full width above text
     - if row.image.attached?
-      div
-        = image_tag main_app.url_for(row.image), class: "card-img-top", style: row.image_styles, alt: row.header.to_s
+      = image_tag(main_app.url_for(row.image), class: 'card-img-top', style: row.image_styles, alt: '')
     - if row.body.present?
-      div = row.body
+      .card-body
+        == row.body
   - else
-    - if row.image.attached?
-      div
-        = image_tag main_app.url_for(row.image), class: "bi fs-2", style: row.image_styles, alt: row.header.to_s
-    div = row.body if row.body.present?
+    .row.g-0.align-items-center
+      .col-auto
+        - if row.image.attached?
+          = image_tag(main_app.url_for(row.image), class: 'bi fs-2', style: row.image_styles, alt: '')
+      .col
+        .card-body
+          == row.body
