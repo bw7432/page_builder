@@ -117,30 +117,37 @@ Those tables and services remain owned by the parent application. PageBuilder re
 
 If you use the PageBuilder admin rich text fields, the host app is also responsible for loading the corresponding Trix and Action Text assets.
 
-In practice, the host app should usually override the engine layout so PageBuilder screens load the host app's importmap and rich text assets. A typical override looks like this:
+In practice, the host app should usually override the engine layout so PageBuilder screens load the host app's importmap, Turbo, and rich text assets. A typical override looks like this:
 
-```erb
-<!-- app/views/layouts/page_builder/application.html.erb -->
-<!DOCTYPE html>
-<html>
-	<head>
-		<%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-		<%= stylesheet_link_tag "trix", media: "all" %>
-		<%= stylesheet_link_tag "actiontext", media: "all" %>
-		<%= stylesheet_link_tag "page_builder/application", media: "all" %>
-		<%= stylesheet_link_tag "page_builder/pages", media: "all" %>
-		<%= stylesheet_link_tag "page_builder/sections", media: "all" %>
-		<%= javascript_importmap_tags %>
-		<%= javascript_import_module_tag "trix" %>
-		<%= javascript_import_module_tag "@rails/actiontext" %>
-	</head>
-	<body>
-		<%= yield %>
-	</body>
-</html>
+```slim
+/ app/views/layouts/page_builder/application.html.slim
+doctype html
+html
+	head
+		- page_title = content_for?(:title) ? yield(:title).to_s : "Page Builder"
+		title = respond_to?(:full_title) ? full_title(page_title) : "#{page_title} | Turnboards"
+		meta name="viewport" content="width=device-width,initial-scale=1"
+		= csrf_meta_tags
+		= csp_meta_tag
+
+		= stylesheet_link_tag "application", "data-turbo-track": "reload"
+		= stylesheet_link_tag "trix", media: "all"
+		= stylesheet_link_tag "actiontext", media: "all"
+		= stylesheet_link_tag "page_builder/application", media: "all"
+		= stylesheet_link_tag "page_builder/pages", media: "all"
+		= stylesheet_link_tag "page_builder/sections", media: "all"
+		= javascript_importmap_tags
+		= javascript_import_module_tag "@hotwired/turbo-rails"
+		= javascript_import_module_tag "trix"
+		= javascript_import_module_tag "@rails/actiontext"
+		= yield :head
+	body
+		= yield
 ```
 
-The engine registers its own CSS files for Sprockets precompilation, but the host app still owns the JavaScript boot path for Trix and Action Text.
+The engine registers its own CSS files for Sprockets precompilation, but the host app still owns the JavaScript boot path for Turbo, Trix, and Action Text.
+
+For attachment URLs rendered inside engine views, prefer `main_app.url_for(...)` so Active Storage routes resolve through the host application.
 
 ## Routes
 
@@ -154,6 +161,14 @@ That gives you two different kinds of page access:
 
 - Admin-style CRUD paths such as `/page_builder/admin/pages/1/edit`
 - Public slug paths such as `/page_builder/my-page-slug`
+
+If the host application also defines a `page_show_path`, use the mounted engine route proxy when you want the engine's public page route explicitly:
+
+```ruby
+page_builder.page_show_path(page.slug)
+```
+
+This avoids route helper collisions between the host app and the mounted engine.
 
 ## Data Model
 
@@ -315,6 +330,19 @@ end
 
 If you are consuming a published version of the engine instead of the local checkout, swap the `path:` source back to your Git or gem source after the latest engine changes are available there.
 
+If the host app wants to reuse the engine's public page template from its own controller, it can do so explicitly:
+
+```ruby
+# app/controllers/pages_controller.rb
+def show
+	@sections = @page.sections.includes(:rich_text_body, :image_attachment, rows: %i[rich_text_body image_attachment]).order(order: :asc)
+
+	render "page_builder/pages/show"
+end
+```
+
+If you take this approach and keep a host layout, ensure that layout yields `:head` so the engine view can inject its CSS tags.
+
 Important section partials:
 
 - [app/views/page_builder/sections/_text.html.slim](/Users/ben/Documents/sites/page_builder/app/views/page_builder/sections/_text.html.slim)
@@ -365,6 +393,8 @@ The engine includes simple admin UIs for managing content:
 - Rows index/edit/new/show
 
 The forms use `form_with`, Action Text editors, and Active Storage file fields. These screens are intended to manage content structure, not to provide a full CMS permissions system.
+
+On admin index screens, delete actions are wired through Turbo-friendly HTML attributes. If delete confirmation is not appearing in a host app override, verify that Turbo is actually loaded in the host's `page_builder` layout and that the delete control is rendered with Turbo-aware attributes rather than plain links or custom JS.
 
 ## Styling
 
