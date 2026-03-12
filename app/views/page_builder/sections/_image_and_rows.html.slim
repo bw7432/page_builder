@@ -1,21 +1,22 @@
 - text_column = capture do
-  div class="col-md-#{section.leading_cols} mb-4 d-flex align-items-center"
+  div class="col-md-#{section.leading_cols} section_image"
     div.justify-content-start
       - if section.image.attached?
         = image_tag(main_app.url_for(section.image), class: 'section_img', style: section.image_styles)
 
 - image_column = capture do
-  div class="col-md-#{12 - section.leading_cols} section_image"
-    - unless section.header_type == 'hidden'
-      = content_tag section.header_type.to_sym, style: "#{section.header_text_color ? "color:#{section.header_text_color}" : ''}"
-        = section.header
-    .div style="#{section.body_text_color ? "color:#{section.body_text_color}" : ''}"
-      == section.body
-    - if section.cta
-      br
-      = render 'shared/app_links'
-    - section.rows.each do |row|
-      = render row
+  div class="col-md-#{12 - section.leading_cols} mb-4 d-flex align-items-center"
+    div.justify-content-start
+      - unless section.header_type == 'hidden'
+        = content_tag section.header_type.to_sym, style: "#{section.header_text_color ? "color:#{section.header_text_color}" : ''}"
+          = section.header
+      .div style="#{section.body_text_color ? "color:#{section.body_text_color}" : ''}"
+        == section.body
+      - if section.cta
+        br
+        = render 'shared/app_links'
+      - section.rows.each do |row|
+        = render row
 
 - if section.alignment == 'left'
   = text_column
