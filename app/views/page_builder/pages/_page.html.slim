@@ -1,4 +1,5 @@
 .page_row style=("background-color: #{page.background_color}" if page.background_color.present?)
+  - cta_buttons = PageBuilder::CtaButtonsBuilder.new(page).build
   .page-builder-hero
     - if page.banner?
       .page-builder-hero-banner
@@ -7,16 +8,16 @@
       .page-builder-hero-copy
         h1 style=("color: #{page.header_text_color}" if page.header_text_color.present?) = page.h1
         div style=("color: #{page.body_text_color}" if page.body_text_color.present?) = page.body
-        - if page.cta?
-          .page-builder-cta = render "page_builder/shared/app_links"
+        - if cta_buttons.any?
+          .page-builder-cta = render "page_builder/shared/cta_buttons", buttons: cta_buttons
 
     - if page.portrait?
       .page-builder-hero-copy.portrait
         div
           h1 style=("color: #{page.header_text_color}" if page.header_text_color.present?) = page.h1
           div style=("color: #{page.body_text_color}" if page.body_text_color.present?) = page.body
-          - if page.cta?
-            .page-builder-cta = render "page_builder/shared/app_links"
+          - if cta_buttons.any?
+            .page-builder-cta = render "page_builder/shared/cta_buttons", buttons: cta_buttons
       .page-builder-hero-media.portrait class=("page_image" if page.image.attached?)
         - if page.image.attached?
           = image_tag main_app.url_for(page.image), class: "page_img", style: page.image_styles, alt: page.image_alt.to_s

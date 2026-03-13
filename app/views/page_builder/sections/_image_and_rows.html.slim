@@ -1,3 +1,5 @@
+- cta_buttons = PageBuilder::CtaButtonsBuilder.new(section).build
+
 - text_column = capture do
   div class="col-md-#{section.leading_cols} section_image"
     .d-flex.justify-content-center
@@ -12,9 +14,9 @@
           = section.header
       .div style="#{section.body_text_color ? "color:#{section.body_text_color}" : ''}"
         == section.body
-      - if section.cta
+      - if cta_buttons.any?
         br
-        = render 'shared/app_links'
+        = render 'page_builder/shared/cta_buttons', buttons: cta_buttons
       - section.rows.each do |row|
         = render row
 

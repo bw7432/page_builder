@@ -1,3 +1,5 @@
+- cta_buttons = PageBuilder::CtaButtonsBuilder.new(section).build
+
 .col-md-7.d-flex.align-items-center
   div.justify-content-start.w-100
     - unless section.header_type == 'hidden'
@@ -5,9 +7,9 @@
         = section.header
     .div style="#{section.body_text_color ? "color:#{section.body_text_color}" : ''}"
       == section.body
-    - if section.cta
+    - if cta_buttons.any?
       br
-      = render 'page_builder/shared/app_links'
+      = render 'page_builder/shared/cta_buttons', buttons: cta_buttons
           
 .col-md-5.section_image
   .d-flex.justify-content-center

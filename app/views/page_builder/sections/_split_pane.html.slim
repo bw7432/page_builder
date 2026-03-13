@@ -1,3 +1,5 @@
+- cta_buttons = PageBuilder::CtaButtonsBuilder.new(section).build
+
 - text_column = capture do
   div class="col-md-#{section.leading_cols} mb-4 d-flex align-items-center"
     div.justify-content-start
@@ -6,9 +8,9 @@
           = section.header
       .div style="#{section.body_text_color ? "color:#{section.body_text_color}" : ''}"
         == section.body
-      - if section.cta
+      - if cta_buttons.any?
         br
-        = render 'page_builder/shared/app_links'
+        = render 'page_builder/shared/cta_buttons', buttons: cta_buttons
 
 - image_column = capture do
   div class="col-md-#{12 - section.leading_cols} section_image"

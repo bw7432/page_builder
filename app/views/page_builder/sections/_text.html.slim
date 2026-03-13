@@ -1,9 +1,11 @@
+- cta_buttons = PageBuilder::CtaButtonsBuilder.new(section).build
+
 .col-md-12.mb-4
   - unless section.header_type == 'hidden'
     = content_tag section.header_type.to_sym, style="#{section.header_text_color ? "color:#{section.header_text_color}" : ''}"
       = section.header
   .div style="#{section.body_text_color ? "color:#{section.body_text_color}" : ''}"
     == section.body
-  - if section.cta
+  - if cta_buttons.any?
     br
-    = render 'page_builder/shared/app_links'
+    = render 'page_builder/shared/cta_buttons', buttons: cta_buttons

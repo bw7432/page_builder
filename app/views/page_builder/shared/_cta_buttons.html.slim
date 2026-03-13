@@ -1,0 +1,7 @@
+.page-builder-app-links
+  - buttons.each do |button|
+    - if button[:kind] == :store
+      = link_to button[:url], target: "_blank", rel: "noopener" do
+        = image_tag button[:image_path], alt: button[:alt]
+    - else
+      = link_to button[:text], button[:url], class: button[:button_class], target: "_blank", rel: "noopener"
