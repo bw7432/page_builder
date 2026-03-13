@@ -70,7 +70,13 @@ module PageBuilder
         :animate,
         :leading_cols,
         :alignment,
-        :raw_html
+        :raw_html,
+        :cta_1_text,
+        :cta_1_url,
+        :cta_1_type,
+        :cta_2_text,
+        :cta_2_url,
+        :cta_2_type
       )
     end
   end

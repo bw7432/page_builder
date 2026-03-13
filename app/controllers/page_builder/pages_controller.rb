@@ -67,7 +67,13 @@ module PageBuilder
         :image_width,
         :image_height,
         :image_styles,
-        :featured
+        :featured,
+        :cta_1_text,
+        :cta_1_url,
+        :cta_1_type,
+        :cta_2_text,
+        :cta_2_url,
+        :cta_2_type
       )
     end
   end

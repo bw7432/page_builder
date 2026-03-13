@@ -65,7 +65,13 @@ module PageBuilder
         :image_position,
         :order,
         :num_value,
-        :header_classes
+        :header_classes,
+        :cta_1_text,
+        :cta_1_url,
+        :cta_1_type,
+        :cta_2_text,
+        :cta_2_url,
+        :cta_2_type
       )
     end
   end

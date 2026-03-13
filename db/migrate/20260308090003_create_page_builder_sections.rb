@@ -10,6 +10,12 @@ class CreatePageBuilderSections < ActiveRecord::Migration[8.1]
       t.string :background_color
       t.integer :type_of, default: 0, null: false
       t.boolean :cta, default: false, null: false
+      t.string :cta_1_text
+      t.string :cta_1_url
+      t.integer :cta_1_type, default: 0, null: false
+      t.string :cta_2_text
+      t.string :cta_2_url
+      t.integer :cta_2_type, default: 0, null: false
       t.string :image_alt
       t.string :header_text_color
       t.string :body_text_color

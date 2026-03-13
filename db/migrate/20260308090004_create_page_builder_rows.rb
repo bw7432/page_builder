@@ -8,6 +8,12 @@ class CreatePageBuilderRows < ActiveRecord::Migration[8.1]
       t.integer :type_of
       t.integer :image_position, default: 0, null: false
       t.string :inline_styles
+      t.string :cta_1_text
+      t.string :cta_1_url
+      t.integer :cta_1_type, default: 0, null: false
+      t.string :cta_2_text
+      t.string :cta_2_url
+      t.integer :cta_2_type, default: 0, null: false
       t.string :url
       t.string :url_text
       t.string :url_classes
