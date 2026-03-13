@@ -7,6 +7,8 @@ module PageBuilder
         page_builder/application.css
         page_builder/pages.css
         page_builder/sections.css
+        page_builder/appstore-apple.svg
+        page_builder/appstore-android.svg
       ]
     end
   end
