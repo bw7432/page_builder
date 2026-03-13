@@ -122,6 +122,13 @@ a {
 	height: auto;
 }
 
+.page-builder-app-links .page-builder-store-badge {
+	width: 180px;
+	height: 54px;
+	display: block;
+	object-fit: contain;
+}
+
 .button,
 button,
 input[type="submit"] {
