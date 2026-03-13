@@ -29,13 +29,13 @@ module PageBuilder
       google_play: 1,
       primary: 2,
       secondary: 3
-    }
+    }, prefix: :cta_1
 
     enum :cta_2_type, {
       app_store: 0,
       google_play: 1,
       primary: 2,
       secondary: 3
-    }
+    }, prefix: :cta_2
   end
 end
