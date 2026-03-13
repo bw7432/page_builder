@@ -28,6 +28,11 @@
   border-radius: 12px;
 }
 
+.section-row .section-img-natural-width {
+  width: auto;
+  max-width: 100%;
+}
+
 .page-builder-section-inner {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));

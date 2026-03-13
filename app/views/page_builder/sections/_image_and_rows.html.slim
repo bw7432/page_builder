@@ -1,8 +1,8 @@
 - text_column = capture do
   div class="col-md-#{section.leading_cols} section_image"
-    div.justify-content-start
+    .d-flex.justify-content-center
       - if section.image.attached?
-        = image_tag(main_app.url_for(section.image), class: 'section_img', style: section.image_styles)
+          = image_tag(main_app.url_for(section.image), class: 'section_img section-img-natural-width', style: section.image_styles)
 
 - image_column = capture do
   div class="col-md-#{12 - section.leading_cols} mb-4 d-flex align-items-center"

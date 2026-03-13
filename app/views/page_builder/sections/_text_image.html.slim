@@ -10,5 +10,6 @@
       = render 'page_builder/shared/app_links'
           
 .col-md-5.section_image
-  - if section.image.attached?
-    = image_tag(main_app.url_for(section.image), class: 'section_img', style: section.image_styles)
+  .d-flex.justify-content-center
+    - if section.image.attached?
+      = image_tag(main_app.url_for(section.image), class: 'section_img section-img-natural-width', style: section.image_styles)
