@@ -59,6 +59,24 @@
     = f.label :url_classes, "URL classes (optional)"
     = f.text_field :url_classes
   = f.hidden_field :section_id, value: row.section_id || params[:section_id]
+  .field
+    = f.label :cta_1_text, "CTA 1 Text (optional)"
+    = f.text_field :cta_1_text
+  .field
+    = f.label :cta_1_url, "CTA 1 URL (optional)"
+    = f.text_field :cta_1_url
+  .field
+    = f.label :cta_1_type, "CTA 1 Type (optional)"
+    = f.select :cta_1_type, PageBuilder::Page.cta_1_types.keys.map { |value| [value.humanize, value] }, include_blank: "Please choose"
+  .field
+    = f.label :cta_2_text, "CTA 2 Text (optional)"
+    = f.text_field :cta_2_text
+  .field
+    = f.label :cta_2_url, "CTA 2 URL (optional)"
+    = f.text_field :cta_2_url
+  .field
+    = f.label :cta_2_type, "CTA 2 Type (optional)"
+    = f.select :cta_2_type, PageBuilder::Page.cta_2_types.keys.map { |value| [value.humanize, value] }, include_blank: "Please choose"
 
   .actions
     = f.submit
