@@ -30,6 +30,20 @@ module PageBuilder
       portrait: 1
     }
 
+    enum :cta_1_type, {
+      app_store: 0,
+      google_play: 1,
+      primary: 2,
+      secondary: 3
+    }
+
+    enum :cta_2_type, {
+      app_store: 0,
+      google_play: 1,
+      primary: 2,
+      secondary: 3
+    }
+
     def cta?
       cta
     end
