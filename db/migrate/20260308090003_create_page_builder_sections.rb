@@ -1,4 +1,4 @@
-class CreatePageBuilderSections < ActiveRecord::Migration[8.1]
+class CreatePageBuilderSections < ActiveRecord::Migration[7.1]
   def change
     create_table :page_builder_sections do |t|
       t.string :header

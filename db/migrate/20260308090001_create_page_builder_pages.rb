@@ -1,4 +1,4 @@
-class CreatePageBuilderPages < ActiveRecord::Migration[8.1]
+class CreatePageBuilderPages < ActiveRecord::Migration[7.1]
   def change
     create_table :page_builder_pages do |t|
       t.string :slug

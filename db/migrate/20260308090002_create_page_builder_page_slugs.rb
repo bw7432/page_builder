@@ -1,4 +1,4 @@
-class CreatePageBuilderPageSlugs < ActiveRecord::Migration[8.1]
+class CreatePageBuilderPageSlugs < ActiveRecord::Migration[7.1]
   def change
     create_table :page_builder_page_slugs do |t|
       t.references :page, null: false, foreign_key: { to_table: :page_builder_pages }
