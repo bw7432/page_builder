@@ -1,4 +1,4 @@
-.card-body
+.card-body.d-flex.flex-column.h-100
   - if row.header.present?
     h5.card-title = row.header
   - if row.num_value.present?
@@ -7,8 +7,10 @@
         span.text-warning.me-1.fs-3 &#9733;
   - if row.body.present?
     .card-text == row.body
-  - if row.image.attached?
-    p
-      = image_tag(main_app.url_for(row.image), class: 'card-img-top', style: row.image_styles, alt: '')
-  - if row.subheader.present?
-    h6.card-subtitle.mb-2.text-muted == row.subheader
+  - if row.image.attached? || row.subheader.present?
+    .mt-auto
+      - if row.image.attached?
+        p.mb-2
+          = image_tag(main_app.url_for(row.image), class: 'card-img-top', style: row.image_styles, alt: '')
+      - if row.subheader.present?
+        h6.card-subtitle.mb-0.text-muted == row.subheader
