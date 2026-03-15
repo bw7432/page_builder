@@ -16,7 +16,7 @@
   div class="col-md-#{12 - section.leading_cols} section_image"
     - if section.image.attached?
       .d-flex.justify-content-center
-        = image_tag(main_app.url_for(section.image), class: 'section_img section-img-natural-width', style: section.image_styles)
+        = image_tag(main_app.url_for(section.image), class: 'section_img section-img-natural-width', style: normalized_section_image_style(section.image_styles))
     - elsif section.rows.present?
       - section.rows.each do |row|
         = render 'page_builder/rows/row'

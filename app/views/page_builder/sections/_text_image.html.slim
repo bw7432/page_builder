@@ -14,4 +14,4 @@
 .col-md-5.section_image
   .d-flex.justify-content-center
     - if section.image.attached?
-      = image_tag(main_app.url_for(section.image), class: 'section_img section-img-natural-width', style: section.image_styles)
+      = image_tag(main_app.url_for(section.image), class: 'section_img section-img-natural-width', style: normalized_section_image_style(section.image_styles))
