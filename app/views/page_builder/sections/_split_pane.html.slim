@@ -1,7 +1,7 @@
 - cta_buttons = PageBuilder::CtaButtonsBuilder.new(section).build
 
 - text_column = capture do
-  div class="col-md-#{section.leading_cols} mb-4 d-flex align-items-center"
+  div class="col-md-#{section.leading_cols} section_text mb-4 d-flex align-items-center"
     div.justify-content-start
       - unless section.header_type == 'hidden'
         = content_tag section.header_type.to_sym, style: "#{section.header_text_color ? "color:#{section.header_text_color}" : ''}"

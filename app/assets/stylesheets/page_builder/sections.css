@@ -93,3 +93,13 @@
     text-align: center;
   }
 }
+
+@media (max-width: 1024px) {
+  .section-row .section_image {
+    order: 1;
+  }
+
+  .section-row .section_text {
+    order: 2;
+  }
+}
