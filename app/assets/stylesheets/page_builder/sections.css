@@ -111,5 +111,7 @@
 
   .section-row .section_text {
     order: 2;
+    padding-top: 24px;
+    padding-bottom: 24px;
   }
 }
