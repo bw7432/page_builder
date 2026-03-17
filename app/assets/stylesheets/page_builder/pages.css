@@ -73,8 +73,21 @@
     text-align: center;
   }
 
+  .page-builder-hero {
+    display: flex;
+    flex-direction: column;
+  }
+
   .page-builder-hero-copy.portrait,
   .page-builder-hero-media.portrait {
     grid-column: span 12;
+  }
+
+  .page-builder-hero-media.portrait {
+    order: 1;
+  }
+
+  .page-builder-hero-copy.portrait {
+    order: 2;
   }
 }

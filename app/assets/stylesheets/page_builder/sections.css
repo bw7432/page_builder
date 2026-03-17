@@ -94,7 +94,17 @@
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
+  .section-row > .container > .row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .section-row > .container > .row > [class*='col-'] {
+    float: none;
+    width: 100%;
+  }
+
   .section-row .section_image {
     order: 1;
   }
