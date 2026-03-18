@@ -1,1 +1,6 @@
+- cta_buttons = PageBuilder::CtaButtonsBuilder.new(section).build
+
 == section.raw_html.to_s
+- if cta_buttons.any?
+  br
+  = render 'page_builder/shared/cta_buttons', buttons: cta_buttons
