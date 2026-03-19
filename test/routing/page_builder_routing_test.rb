@@ -1,6 +1,20 @@
 require "test_helper"
 
 class PageBuilderRoutingTest < ActionDispatch::IntegrationTest
+  test "routes api page import" do
+    assert_recognizes(
+      { controller: "page_builder/api/pages", action: "import_page" },
+      { method: "post", path: "/page_builder/api/pages/import" }
+    )
+  end
+
+  test "routes api page show by slug" do
+    assert_recognizes(
+      { controller: "page_builder/api/pages", action: "show", page_slug: "sample-page" },
+      { method: "get", path: "/page_builder/api/pages/sample-page" }
+    )
+  end
+
   test "routes pages index" do
     assert_recognizes(
       { controller: "page_builder/pages", action: "index" },

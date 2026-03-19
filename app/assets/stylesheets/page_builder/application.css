@@ -58,6 +58,24 @@ a {
 	margin: 1rem 0;
 }
 
+.page-builder-import {
+	margin: 1rem 0 1.25rem;
+	padding: 1rem;
+	background: var(--page-builder-panel);
+	border: 1px solid var(--page-builder-border);
+	border-radius: 0.75rem;
+}
+
+.page-builder-import-form {
+	grid-template-columns: minmax(280px, 1fr) auto;
+	align-items: end;
+	margin: 0;
+}
+
+.page-builder-import-form .actions {
+	justify-content: flex-end;
+}
+
 .page-builder-table {
 	width: 100%;
 	border-collapse: collapse;
@@ -159,6 +177,14 @@ input[type="submit"] {
 @media (max-width: 768px) {
 	.page-builder-admin {
 		padding: 1rem;
+	}
+
+	.page-builder-import-form {
+		grid-template-columns: 1fr;
+	}
+
+	.page-builder-import-form .actions {
+		justify-content: flex-start;
 	}
 
 	.page-builder-table,

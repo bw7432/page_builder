@@ -1,6 +1,14 @@
 .page-builder-admin
   h1 Pages
 
+  .page-builder-import
+    = form_with url: api_import_page_path, method: :post, local: true, class: "page-builder-form page-builder-import-form" do |form|
+      .field
+        = form.label :api_url, "Import Page From API URL"
+        = form.url_field :api_url, placeholder: "https://example.com/page_builder/api/pages/my-page", required: true
+      .actions
+        = form.submit "Import Page", class: "button"
+
   .page-builder-actions
     = link_to "New page", new_admin_page_path, class: "button"
 
@@ -15,7 +23,10 @@
     tbody
       - @pages.each do |page|
         tr
-          td = link_to(page.h1.presence || page.slug, page_builder.page_show_path(page.slug))
+          td
+            = link_to(page.h1.presence || page.slug, page_builder.page_show_path(page.slug))
+            br
+            small = page_builder.api_page_url(page.slug)
           td class="status-#{page.status}" = page.status
           td = link_to "Sections", admin_sections_path(page_id: page.id)
           td = link_to "Edit", edit_admin_page_path(page)
