@@ -4,8 +4,6 @@ require "open-uri"
 
 module PageBuilder
   class PageImportService
-    LOCALHOST_HOSTS = %w[localhost 127.0.0.1 ::1].freeze
-
     Result = Struct.new(:success?, :page, :error, keyword_init: true)
 
     def initialize(api_url:)
@@ -196,17 +194,17 @@ module PageBuilder
       image_uri = URI.parse(image_url)
       return image_url if image_uri.absolute?
 
-      localhost_base = localhost_api_base_url
-      return nil if localhost_base.blank?
+      source_base = source_api_base_url
+      return nil if source_base.blank?
 
-      URI.join(localhost_base, image_url).to_s
+      URI.join(source_base, image_url).to_s
     rescue URI::InvalidURIError
       nil
     end
 
-    def localhost_api_base_url
+    def source_api_base_url
       api_uri = URI.parse(api_url)
-      return nil unless LOCALHOST_HOSTS.include?(api_uri.host)
+      return nil if api_uri.host.blank?
 
       base_url = "#{api_uri.scheme}://#{api_uri.host}"
       base_url = "#{base_url}:#{api_uri.port}" unless [ 80, 443 ].include?(api_uri.port)
