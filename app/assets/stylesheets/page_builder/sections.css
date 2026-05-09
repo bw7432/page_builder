@@ -1,6 +1,15 @@
 .section-row {
+  box-sizing: border-box;
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 100%;
+  overflow-x: clip;
   padding: 25px 30px;
   background-color: #ebebeb;
+}
+
+.section-row > .container {
+  max-width: 100%;
 }
 
 .section-row .trix-content {
