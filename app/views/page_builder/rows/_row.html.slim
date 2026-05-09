@@ -4,8 +4,8 @@
     .col-md-12
       = render 'page_builder/rows/image_text', row: row
 - when 'testimonial'
-  div.d-flex.col-md-4.p-1
-    div class="#{row.row_classes}"
+  div.d-flex.col-12.col-md-4.p-1.min-w-0
+    div class="#{['w-100', 'min-w-0', 'page-builder-testimonial', row.row_classes].compact.join(' ')}"
       = render 'page_builder/rows/testimonial', row: row
 - when 'image_slider'
   div.d-flex.col-md-4.p-1

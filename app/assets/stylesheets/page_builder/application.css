@@ -147,6 +147,25 @@ a {
 	object-fit: contain;
 }
 
+.page-builder-testimonial,
+.page-builder-testimonial .card-body,
+.page-builder-testimonial .card-text,
+.page-builder-testimonial .trix-content {
+	max-width: 100%;
+	min-width: 0;
+	overflow-wrap: anywhere;
+	word-break: normal;
+}
+
+.page-builder-testimonial img {
+	height: auto;
+	max-width: 100%;
+}
+
+.page-builder-testimonial .card-img-top {
+	width: auto;
+}
+
 .button,
 button,
 input[type="submit"] {
